@@ -2,6 +2,4 @@
 
 Auth example with Lucia auth and nextjs
 
-main branch - username password example
-multiple-provider branch - example with username - password, google, github, discord
-
+Simple username password example with lucia
