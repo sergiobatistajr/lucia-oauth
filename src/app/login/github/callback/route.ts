@@ -1,15 +1,15 @@
-import { lucia } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
-import { discord } from "@/lib/auth-providers";
+import { github } from "@/lib/auth-providers";
+import { lucia } from "@/lib/auth";
 import { db } from "@/lib/db";
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
-  const storedState = cookies().get("discord_oauth_state")?.value ?? null;
+  const storedState = cookies().get("github_oauth_state")?.value ?? null;
   if (!code || !state || !storedState || state !== storedState) {
     return new Response(null, {
       status: 400,
@@ -17,23 +17,16 @@ export async function GET(request: Request): Promise<Response> {
   }
 
   try {
-    const tokens = await discord.validateAuthorizationCode(code);
-    const discordUserResponse = await fetch(
-      "https://discord.com/api/users/@me",
-      {
-        headers: {
-          Authorization: `Bearer ${tokens.accessToken}`,
-        },
+    const tokens = await github.validateAuthorizationCode(code);
+    const githubUserResponse = await fetch("https://api.github.com/user", {
+      headers: {
+        Authorization: `Bearer ${tokens.accessToken}`,
       },
-    );
-    const discordUser: DiscordUser = await discordUserResponse.json();
-
+    });
+    const githubUser: GitHubUser = await githubUserResponse.json();
     // Replace this with your own DB client.
     const existingUser = await db.account.findFirst({
-      where: {
-        providerId: "discord",
-        providerUserId: discordUser.id,
-      },
+      where: { providerUserId: githubUser.id.toString(), providerId: "github" },
     });
 
     if (existingUser) {
@@ -57,15 +50,15 @@ export async function GET(request: Request): Promise<Response> {
     // Ordem de salvar importa, primeiro criar o usuario depois a account
     await db.user.create({
       data: {
+        username: githubUser.login,
         id: userId,
-        username: discordUser.username,
       },
     });
     await db.account.create({
       data: {
         userId,
-        providerId: "discord",
-        providerUserId: discordUser.id,
+        providerId: "github",
+        providerUserId: githubUser.id.toString(),
       },
     });
 
@@ -96,7 +89,7 @@ export async function GET(request: Request): Promise<Response> {
   }
 }
 
-interface DiscordUser {
-  id: string;
-  username: string;
+interface GitHubUser {
+  id: number;
+  login: string;
 }

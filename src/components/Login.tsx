@@ -13,9 +13,9 @@ export default function Login() {
   });
 
   return (
-    <div className="flex flex-1 justify-center items-center p-24">
+    <div className="flex flex-1 items-center justify-center p-24">
       <div className="flex flex-col gap-4">
-        <h1 className="font-bold text-3xl">Login with account</h1>
+        <h1 className="text-3xl font-bold">Login with account</h1>
         <form className="flex flex-col" action={formAction}>
           <Label htmlFor="username">Username</Label>
           <Input name="username" id="username" />
@@ -32,11 +32,14 @@ export default function Login() {
             Sign-up
           </Link>
         </p>
-        <div className="flex flex-col items-center gap-2 text-muted-foreground">
+        <div className="text-muted-foreground flex flex-col items-center gap-2">
           <h1>OR</h1>
           <p>Continue with</p>
           <Link className="hover:cursor-pointer" href="/login/discord">
-            <RiDiscordFill className="w-8 h-8" />
+            <RiDiscordFill className="h-8 w-8" />
+          </Link>
+          <Link className="hover:cursor-pointer" href="/login/github">
+            github
           </Link>
         </div>
       </div>

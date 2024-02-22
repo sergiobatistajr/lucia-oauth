@@ -1,24 +1,33 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  // directUrl = env("POSTGRES_URL_NON_POOLING")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+    // directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
-  id           String    @id
-  username     String    @unique
-  discordId    String?   @unique
-  hashPassword String?
-  sessions     Session[]
+    id           String    @id
+    username     String    @unique
+    hashPassword String?
+    sessions     Session[]
+    accounts     Account[]
 }
 
 model Session {
-  id        String   @id
-  userId    String
-  expiresAt DateTime
-  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+    id        String   @id
+    userId    String
+    expiresAt DateTime
+    user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Account {
+    providerId     String
+    providerUserId String @unique
+    userId         String
+    user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@id([providerId, providerUserId])
 }
