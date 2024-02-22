@@ -161,5 +161,3 @@ export async function logout(): Promise<ActionResult> {
   );
   return redirect("/login");
 }
-
-//TODO criar uma funcao para setor o cookie
