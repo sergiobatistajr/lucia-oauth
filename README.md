@@ -2,4 +2,6 @@
 
 Auth example with Lucia auth and nextjs
 
-username password example make sure to run npm install
+main branch - username password example
+multiple-provider branch - example with username - password, google, github, discord
+
