@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { login, type State } from "@/lib/action";
 import Link from "next/link";
 import { useFormState } from "react-dom";
+import { LiaGithub } from "react-icons/lia";
 import { RiDiscordFill } from "react-icons/ri";
 
 export default function Login() {
@@ -35,12 +36,14 @@ export default function Login() {
         <div className="text-muted-foreground flex flex-col items-center gap-2">
           <h1>OR</h1>
           <p>Continue with</p>
-          <Link className="hover:cursor-pointer" href="/login/discord">
-            <RiDiscordFill className="h-8 w-8" />
-          </Link>
-          <Link className="hover:cursor-pointer" href="/login/github">
-            github
-          </Link>
+          <div className="flex justify-center gap-1">
+            <Link className="hover:cursor-pointer" href="/login/discord">
+              <RiDiscordFill className="h-8 w-8" />
+            </Link>
+            <Link className="hover:cursor-pointer" href="/login/github">
+              <LiaGithub className="h-8 w-8" />
+            </Link>
+          </div>
         </div>
       </div>
     </div>
