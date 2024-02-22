@@ -5,7 +5,6 @@ import { Label } from "@/components/ui/label";
 import { login, type State } from "@/lib/action";
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { RiDiscordFill } from "react-icons/ri";
 
 export default function Login() {
   const [state, formAction] = useFormState<State, FormData>(login, {
