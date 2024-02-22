@@ -13,6 +13,7 @@ model User {
     username     String    @unique
     hashPassword String?
     sessions     Session[]
+    accounts     Account[]
 }
 
 model Session {
@@ -20,4 +21,13 @@ model Session {
     userId    String
     expiresAt DateTime
     user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Account {
+    providerId     String
+    providerUserId String @unique
+    userId         String
+    user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@id([providerId, providerUserId])
 }
