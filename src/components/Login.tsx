@@ -14,9 +14,9 @@ export default function Login() {
   });
 
   return (
-    <div className="flex flex-1 items-center justify-center p-24">
-      <div className="flex flex-col gap-4">
-        <h1 className="text-3xl font-bold">Login with account</h1>
+    <div className="flex h-screen w-full flex-1 items-center justify-center  p-24">
+      <div className="flex flex-col gap-4 rounded-md border border-sky-100 bg-slate-50 p-4">
+        <h1 className="text-2xl font-bold sm:text-3xl">Login with account</h1>
         <form className="flex flex-col" action={formAction}>
           <Label htmlFor="username">Username</Label>
           <Input name="username" id="username" />
