@@ -21,6 +21,9 @@ export default function SignUp() {
           <Label htmlFor="password">Password</Label>
           <Input type="password" name="password" id="password" />
           <br />
+          <Label htmlFor="confirmPassword">Confirm password</Label>
+          <Input type="password" name="confirmPassword" id="confirmPassword" />
+          <br />
           <p className="text-red-600">{state.error}</p>
           <Button>Sign-up</Button>
         </form>
