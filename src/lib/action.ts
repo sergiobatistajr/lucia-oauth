@@ -53,8 +53,9 @@ export async function login(_: State, formData: FormData) {
   //verificar se o usuario ja nao existe no oauth
   const validPassword = await new Argon2id().verify(
     existingUser.hashPassword!,
-    password
+    password,
   );
+
   if (!validPassword) {
     return {
       error: "Incorrect username or password",
@@ -66,14 +67,14 @@ export async function login(_: State, formData: FormData) {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
   return redirect("/");
 }
 
 export async function signup(
   _: State,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionResult> {
   const username = formData.get("username");
   // username must be between 4 ~ 31 characters, and only consists of lowercase letters, 0-9, -, and _
@@ -96,6 +97,22 @@ export async function signup(
   ) {
     return {
       error: "Invalid password",
+    };
+  }
+
+  const confirmPassword = formData.get("confirmPassword");
+  if (
+    typeof confirmPassword !== "string" ||
+    confirmPassword.length < 6 ||
+    confirmPassword.length > 255
+  ) {
+    return {
+      error: "Invalid confirm password",
+    };
+  }
+  if (password !== confirmPassword) {
+    return {
+      error: "passwords don't match",
     };
   }
 
@@ -122,7 +139,7 @@ export async function signup(
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
   return redirect("/");
 }
@@ -140,9 +157,7 @@ export async function logout(): Promise<ActionResult> {
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
-    sessionCookie.attributes
+    sessionCookie.attributes,
   );
   return redirect("/login");
 }
-
-//TODO criar uma funcao para setor o cookie
