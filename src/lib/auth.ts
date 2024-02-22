@@ -16,7 +16,6 @@ export const lucia = new Lucia(adapter, {
       // attributes has the type of DatabaseUserAttributes
       id: attributes.id,
       username: attributes.username,
-      discordId: attributes.discordId,
     };
   },
 });
@@ -40,7 +39,7 @@ export const validateRequest = cache(
         cookies().set(
           sessionCookie.name,
           sessionCookie.value,
-          sessionCookie.attributes
+          sessionCookie.attributes,
         );
       }
       if (!result.session) {
@@ -48,12 +47,12 @@ export const validateRequest = cache(
         cookies().set(
           sessionCookie.name,
           sessionCookie.value,
-          sessionCookie.attributes
+          sessionCookie.attributes,
         );
       }
     } catch {}
     return result;
-  }
+  },
 );
 
 declare module "lucia" {
@@ -66,5 +65,4 @@ declare module "lucia" {
 interface DatabaseUserAttributes {
   id: string;
   username: string;
-  discordId?: string;
 }
